@@ -1,0 +1,15 @@
+{
+  "main": "http://localhost:3000",
+  "name": "smartPARK-KioskV2",
+  "description": "smartPARK-KioskV2",
+  "version": "0.0.1",
+  "keywords": [ "smartpark", "kiosk" ],
+  "node-main": "server.js",
+  "window": {
+    "title": "SmartPARK Kiosk",
+    "toolbar": true,
+    "width": 1920,
+    "height": 1080,
+    "kiosk":true
+  }
+}

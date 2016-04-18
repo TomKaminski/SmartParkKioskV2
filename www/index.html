@@ -1,0 +1,390 @@
+﻿<!DOCTYPE html>
+<html ng-app="app" style="height:100%">
+    <head>
+
+
+        <title>SmartPark Kiosk</title>
+        <link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="css/angular-virtual-keyboard.css">
+        <link rel="stylesheet" type="text/css" href="lib/materialize/materialize.css">
+        <link rel="stylesheet" type="text/css" href="css/material-icons.css">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+
+    </head>
+    <body ng-cloak style="height:100%">
+        <section ui-view="layout" style="height:100%"></section>
+
+        <script src="lib/jquery/jquery.js"></script>
+        <!--<script src="https://secure.payu.com/res/v2/openpayu-2.0.js"></script>-->
+        <!--<script src="https://secure.payu.com/res/v2/plugin-token-2.0.js"></script>-->
+        <script src="lib/materialize/materialize.js"></script>
+        <script src="lib/angular/angular.js"></script>
+        <script src="lib/angular/angular-messages.js"></script>
+        <script src="lib/angular/angular-touch.js"></script>
+        <script src="lib/angular/angular-sanitize.js"></script>
+        <script src="lib/angular/angular-ui-router.js"></script>
+        <script src="lib/angular/angular-virtual-keyboard.js"></script>
+
+        <script src="js/app.js"></script>
+        <script src="js/services/loadingContentService.js"></script>
+        <script src="js/services/notificationService.js"></script>
+        <!--<script src="js/services/payuReturnService.js"></script>-->
+        <script src="js/services/orderService.js"></script>
+
+        <script src="js/factories/apiFactory.js"></script>
+
+        <script src="js/directives/loaderDirective.js"></script>
+        <!--<script src="js/directives/requestVerificationTokenDirective.js"></script>-->
+
+        <script src="js/controllers/layoutCtrl.js"></script>
+        <script src="js/controllers/mainCtrl.js"></script>
+        <script src="js/controllers/homepageCtrl.js"></script>
+        <script src="js/controllers/thanksCtrl.js"></script>
+        <script src="js/controllers/cardPaymentCtrl.js"></script>
+        <script src="js/controllers/choosePaymentCtrl.js"></script>
+        <script src="js/controllers/traditionalPaymentCtrl.js"></script>
+
+
+        <script id="templates/layout.html" type="text/ng-template">
+
+        <section ui-view="content" style="height:90%; position:relative"></section>
+            <footer>
+                <div class="row flex-align-center-container">
+                    <div class="col s1 flex-align-center-container column-container">
+                        <img src="img/logotyp_white_info_small.png" style="height:50%"/>
+                        <p class="no-margin">smartPARK</p>
+                    </div>
+                    <div class="col s11"><p class="author">System został stworzony przez studenta Informatyki inż. Tomasza Kamińskiego, na Wydziale Budowy Maszyn i Informatyki jako projekt<br>
+                        pracy inżynierskiej. Zadaniem systemu jest ułatwienie studentom płatności za wjazd na parking uczelni oraz wyjazd dzięki aplikacji mobilnej.</p></div>
+                </div>
+            </footer>
+        </script>
+
+        <script id="templates/home.html" type="text/ng-template">
+            <div class="row flex-align-center-container" ng-swipe-right="home.startSwipeRight()" style="height:100%">
+                <div class="col s6">
+                    <div class="row">
+                        <div class="col s10 offset-s1">
+                            <img src="img/logoSmartPark_new.png" />
+                        </div>
+                        <div class="col s12">
+                            <h1><b>przesuń</b>, aby kupić wyjazdy >></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s6">
+                    <div class="row">
+                        <div class="col s5">
+                            <img src="img/infografika_oś.png" />
+                        </div>
+                        <div class="col s7">
+                            <img src="img/mockup.png" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script id="templates/main.html" type="text/ng-template">
+            <div class="row no-margin" style="padding-top:30px">
+                <div class="col s3 left-box">
+                    <img src="img/logoSmartPark_new.png" style="padding: 0 10%;" class="margin-bottom-20"/>
+                    <p class="smart-color-normal pay-text">KUP WYJAZDY!</p>
+                    <img src="img/pay_image.png" style="padding: 0 20%;" class="margin-bottom-20"/>
+                    <p class="margin-bottom-20 text-thin smart-color-lighter text-size-1-6 center-align">
+                        DZIĘKI NASZEJ APLIKACJI<br>
+                        KUPISZ WYJAZDY W KILKU<br>
+                        PROSTYCH KROKACH
+                    </p>
+                    <p class="margin-bottom-20 text-thin smart-color-lighter  text-size-1-6 center-align">
+                        <b>1. PODANIE MAILA ORAZ<br> LICZBY WYJAZDÓW</b><br>
+                        <span class="text-gray">2. WYBÓR SPOSOBU <br> PŁATNOŚCI</span><br>
+                        <span class="text-gray">3. REALIZACJA ZAMÓWIENIA</span><br>
+                    </p>
+                    <h5 class="margin-bottom-20 smart-color-lighter text-size-2 center-align">
+                        <b>I GOTOWE!</b>
+                    </h5>
+                </div>
+                <div class="col s9" style="padding: 0px 80px;">
+                    <h2 class="smart-color-lighter text-bold margin-bottom-20">krok 1.</h2>
+                    <div class="row">
+                        <div class="col s5 no-padding" ng-form name="main.checkLoginForm">
+                            <p class="text-gray text-thin text-size-2"><b>Podaj swój email oraz liczbę wyjazdów, <br>którą chcesz zakupić</b></p>
+                            <p class="text-size-1-2 text-bold smart-color-lighter no-margin">Aktualna cena za 1 wyjazd: {{main.stepOneModel.pricePerCharge | number:2}} PLN</p>
+                            <p class="text-size-1-2 text-bold smart-color-lighter no-margin">Aktualna suma zamówienia: {{main.stepOneModel.price | number:2}} PLN</p>
+
+                            <div class="row">
+                                <div class="input-field col s12 no-padding">
+                                    <input id="email" name="email" type="email" ng-virtual-keyboard ng-model="main.stepOneModel.email" required ng-disabled="main.stepOneModel.disableButton == true">
+                                    <label for="email" style="left:0" ng-class="{'active':main.stepOneModel.email.length>0}">adres email</label>
+                                    <div ng-messages="main.checkLoginForm.email.$error" ng-show="main.checkLoginForm.email.$touched" class="padding-bottom-20 ng-messages-errors">
+                                        <p ng-message="required">Podaj adres email Twojego konta w smartPARK</p>
+                                        <p ng-message="email">To nie jest prawidłowy adres email</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 no-padding">
+                                    <input id="charges" name="charges" type="number" ng-change="main.chargesOnChange()" ng-virtual-keyboard ng-model="main.stepOneModel.charges" required min="1" ng-disabled="main.stepOneModel.disableButton == true">
+                                    <label for="charges" style="left:0" class="active">liczba wyjazdów</label>
+                                    <div ng-messages="main.checkLoginForm.charges.$error" ng-show="main.checkLoginForm.charges.$touched" class="ng-messages-errors">
+                                        <p ng-message="number">Wartość nie jest liczbą</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="grey-text text-darken-4 text-size-2 no-margin">
+                                Cennik wyjazdów
+                            </p>
+                            <p>
+                                W SmartPark stawiamy na jakość, dlatego stworzyliśmy dynamiczny cennik wyjazdów. Cena jednego wyjazdu skaluje się z ilością zakupionych wyjazdów, oznacza to, żę im więcej, tym mniej zapłacisz!
+                            </p>
+                            <p class="text-size-1-4 no-margin">
+                                Cena bazowa za 1 wyjazd: <b>{{main.defaultPrice.PriceLabel}} PLN</b>
+                            </p>
+                            <div ng-if="main.prices.length === 0">
+                                <p>
+                                    Niestety, na ten moment dostępna jest jedynie cena bazowa za jeden wyjazd, pracujemy nad wprowadzeniem zniżek.
+                                </p>
+                            </div>
+                            <div ng-repeat="price in main.prices">
+                                <p class="text-size-1-6 no-margin">
+                                    Przy zakupie {{price.MinCharges}} wyjazdów i więcej: <b>{{price.PriceLabel}} PLN (-{{price.PercentDiscount}}%)</b>
+                                </p>
+                            </div>
+
+                        </div>
+                        <div class="col s5 offset-s2">
+                            <button class="cancel-order-button" ng-disabled="main.stepOneModel.disableButton == true" ng-click="main.cancelOrder()">
+                                <p><b>ANULUJ</b><br>ZAMÓWIENIE</p>
+                            </button>
+                            <button class="button-smartpark-kiosk" ng-disabled="main.checkLoginForm.$invalid || main.stepOneModel.disableButton == true" ng-click="main.goToStepTwo()">
+                                <p class="smart-color-lighter text-size-1-6 no-margin margin-bottom-20" style="margin-top:40px"><b>PRZEJDŹ DO KROKU 2.</b></p>
+                                <p class="text-gray text-thin text-size-2 no-margin"><b>WYBÓR SPOSOBU PŁATNOŚCI</b></p>
+                            </button>
+                        </div>
+                        <div class="row" style="padding-right: 20px;">
+                            <loader loadname="checkLogin"></loader>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script id="templates/choosePayment.html" type="text/ng-template">
+            <img src="img/payULogos.png" style="position: absolute; bottom:20px; right:80px"/>
+            <div class="row no-margin" style="padding-top:30px">
+                <div class="col s3 left-box">
+                    <img src="img/logoSmartPark_new.png" style="padding: 0 10%;" class="margin-bottom-20"/>
+                    <p class="smart-color-normal pay-text">KUP WYJAZDY!</p>
+                    <img src="img/pay_image.png" style="padding: 0 20%;" class="margin-bottom-20"/>
+                    <p class="margin-bottom-20 text-thin smart-color-lighter text-size-1-6 center-align">
+                        DZIĘKI NASZEJ APLIKACJI<br>
+                        KUPISZ WYJAZDY W KILKU<br>
+                        PROSTYCH KROKACH
+                    </p>
+                    <p class="margin-bottom-20 text-thin smart-color-lighter  text-size-1-6 center-align">
+                        <span class="text-gray">1. PODANIE MAILA ORAZ<br> LICZBY WYJAZDÓW</span><br>
+                        <b>2. WYBÓR SPOSOBU <br> PŁATNOŚCI</b><br>
+                        <span class="text-gray">3. REALIZACJA ZAMÓWIENIA</span><br>
+                    </p>
+                    <h5 class="margin-bottom-20 smart-color-lighter text-size-2 center-align">
+                        <b>I GOTOWE!</b>
+                    </h5>
+                </div>
+                <div class="col s9" style="padding: 0px 80px;">
+                    <h2 class="smart-color-lighter text-bold margin-bottom-20">krok 2.</h2>
+                    <div class="row">
+                        <div class="col s5 no-padding">
+                            <p class="text-gray text-thin text-size-2"><b>Wybierz sposób w jaki chcesz dokonać płatności za swoje zamówienie</b></p>
+                            <p class="smart-park-radio margin-bottom-20">
+                                <input class="with-gap" name="payment-method" type="radio" id="normal-payment"  value="1" ng-model="cp.paymentMethod" ng-checked="cp.paymentMethod == 1"  ng-click="cp.updatePaymentMethod(1)"/>
+                                <label for="normal-payment">Szybki przelew online<br />
+                                    <span class="radio-desc">Przelew bez użycia karty.<br>Po wybraniu tej opcji zostaniesz przeniesiony<br>na stronę payu oraz stronę swojego banku</span>
+                                </label>
+                            </p>
+                            <p class="smart-park-radio margin-bottom-20">
+                                <input class="with-gap" name="payment-method" type="radio" id="card-payment" value="2" ng-model="cp.paymentMethod" ng-checked="cp.paymentMethod == 2"  ng-click="cp.updatePaymentMethod(2)"/>
+                                <label for="card-payment">płatność kartą<br/>
+                                    <span class="radio-desc">Po wybraniu tej opcji zostaniesz poproszony<br>o przyłożenie karty do czytnika nfc<br>następnie musisz wprowadzić 3-cyfrowy kod cvv2/cvc2<br/>znajdujący się na odwrocie karty.</span>
+                                </label>
+                            </p>
+
+
+                            <button class="button-smartpark-kiosk" ng-disabled="cp.disableButton == true" style="margin: 0 50px 20px; width:70%" ng-click="cp.goToStepOne()">
+                                <p class="smart-color-lighter text-size-1-6 no-margin margin-bottom-20"><b>POWRÓT DO KROKU 1.</b></p>
+                                <p class="text-gray text-thin text-size-1-2 no-margin"><b>PODANIE MAILA ORAZ LICZBY WYJAZDÓW</b></p>
+                            </button>
+                            <p class="grey-text text-darken-4 text-size-2 no-margin">
+                                Informacje o Twoim zamówieniu
+                            </p>
+                            <p class="text-size-1-2 no-margin">
+                                Imię: <b>{{cp.orderInfo.name}}</b><br>
+                                Nazwisko: <b>{{cp.orderInfo.lastName}}</b><br>
+                                Adres email: <b>{{cp.orderInfo.email}}</b><br>
+                                Liczba wyjazdów: <b>{{cp.orderInfo.charges}}</b><br>
+                                Cena za 1 wyjazd: <b>{{cp.orderInfo.pricePerCharge | number:2}} PLN</b><br>
+                                Suma: <b>{{cp.orderInfo.price | number:2}} PLN</b>
+
+                            </p>
+                        </div>
+                        <div class="col s5 offset-s2">
+                            <button class="cancel-order-button" ng-disabled="cp.disableButton == true" ng-click="cp.cancelOrder()">
+                                <p><b>ANULUJ</b><br>ZAMÓWIENIE</p>
+                            </button>
+                            <button class="button-smartpark-kiosk" ng-disabled="cp.paymentMethod == null || cp.disableButton == true" ng-click="cp.goToStepThree()">
+                                <p class="smart-color-lighter text-size-1-6 no-margin margin-bottom-20" style="margin-top:40px"><b>PRZEJDŹ DO KROKU 3.</b></p>
+                                <p class="text-gray text-thin text-size-2 no-margin"><b>REALIZACJA ZAMÓWIENIA</b></p>
+                            </button>
+                            <div class="row" style="padding-right: 20px;">
+                                <loader loadname="buyChargesLoader"></loader>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script id="templates/cardPayment.html" type="text/ng-template">
+            <img src="img/payULogos.png" style="position: absolute; bottom:20px; right:80px"/>
+            <div class="row no-margin" style="padding-top:30px">
+                <div class="col s3 left-box">
+                    <img src="img/logoSmartPark_new.png" style="padding: 0 10%;" class="margin-bottom-20"/>
+                    <p class="smart-color-normal pay-text">KUP WYJAZDY!</p>
+                    <img src="img/pay_image.png" style="padding: 0 20%;" class="margin-bottom-20"/>
+                    <p class="margin-bottom-20 text-thin smart-color-lighter text-size-1-6 center-align">
+                        DZIĘKI NASZEJ APLIKACJI<br>
+                        KUPISZ WYJAZDY W KILKU<br>
+                        PROSTYCH KROKACH
+                    </p>
+                    <p class="margin-bottom-20 text-thin smart-color-lighter  text-size-1-6 center-align">
+                        <span class="text-gray">1. PODANIE MAILA ORAZ<br> LICZBY WYJAZDÓW</span><br>
+                        <span class="text-gray">2. WYBÓR SPOSOBU <br> PŁATNOŚCI</span><br>
+                        <b>3. REALIZACJA ZAMÓWIENIA</b><br>
+                    </p>
+                    <h5 class="margin-bottom-20 smart-color-lighter text-size-2 center-align">
+                        <b>I GOTOWE!</b>
+                    </h5>
+                </div>
+                <div class="col s9" style="padding: 0px 80px;">
+                    <h2 class="smart-color-lighter text-bold margin-bottom-20">krok 3.</h2>
+                    <div class="row">
+                        <div class="col s6 no-padding" ng-form name="main.checkLoginForm">
+                            <p class="text-gray text-thin text-size-2 no-margin"><b>Realizacja zamówienia</b></p>
+                            <div class="card-payment-form-container">
+                                <p class="title">PŁATNŚĆ REALIZOWANA PRZEZ <img src="img/payu_white.png" style="vertical-align: middle; height: 30px; margin-left:15px"></p>
+                                <div class="inner-box">
+                                    <p class="pay-amount"><span class="text-gray">KWOTA DO ZAPŁATY: </span>50.00 PLN</p>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col s3 card-form-label">NUMER<br>KARTY</div>
+                                        <div class="col s1 smart-icon-box">
+                                            <p class="no-margin">
+                                                <i class="material-icons">credit_card</i>
+                                            </p>
+                                        </div>
+                                        <div class="col s7 card-smart-input">
+                                            <input id="card-number" type="text" class="center-align" placeholder="1111 1111 1111 1111">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s3 card-form-label">DATA<br>WAŻNOŚCI KARTY</div>
+                                        <div class="col s1 smart-icon-box">
+                                            <p class="no-margin">
+                                                <i class="material-icons">date_range</i>
+                                            </p>
+                                        </div>
+                                        <div class="col s2 card-smart-input">
+                                            <input id="expire-date-month" type="text" min="1" max="12" class="center-align" placeholder="MM">
+                                        </div>
+                                        <div class="col s1 center-align text-size-1-4" style="line-height:45px;">/</div>
+                                        <div class="col s2 card-smart-input">
+                                            <input id="expire-date-year" type="text" min="16" max="99" class="center-align" placeholder="YY">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s3 card-form-label" style="line-height:45px; vertical-align: bottom">CVV2/CVC2*</div>
+                                        <div class="col s1 smart-icon-box">
+                                            <p class="no-margin">
+                                                <i class="material-icons">lock_outline</i>
+                                            </p>
+                                        </div>
+                                        <div class="col s2 card-smart-input">
+                                            <input id="cvv-code" type="text" class="center-align" placeholder="111">
+                                        </div>
+                                        <div class="col s5"><p class="smart-color-lighter no-margin smart-cvv-desc">*numer znajdziesz na odwrocie karty</p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s9 offset-s3" style="padding-left: 0;">
+                                            <p class="no-margin">
+                                                <input type="checkbox" id="test5" class="filled-in smart-color-lighter"/>
+                                                <label for="test5" class="card-checkbox-label smart-color-lighter">Akceptuję regulamin płatności payu</label>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="title margin-bottom-50">BEZPIECZNA TRANSAKCJA DZIĘKI:
+                                    <img src="img/verified-by-visa.png" style="vertical-align: middle; height: 30px; margin-left:15px">
+                                    <img src="img/mastercard-securecode.png" style="vertical-align: middle; height: 30px; margin-left:15px">
+                                </p>
+                            </div>
+                            <p class="no-margin text-gray text-size-1-6"><b>POMOC</b></p>
+                            <p class="no-margin text-gray text-size-1-2 margin-bottom-50" style="line-height:1.1">Przyłóż kartę do czytnika NFC - następnie uzupełnij jedynie KOD CVV2/CVC2<br>
+                            lub<br>
+                            wpisz wszystkie dane z klawiatury</p>
+
+                            <button class="button-smartpark-kiosk" ng-disabled="cp.disableButton == true" style="margin: 0 50px 20px; width:50%" ng-click="cap.goToStepTwo()">
+                                <p class="smart-color-lighter text-size-1-4 no-margin margin-bottom-20"><b>POWRÓT DO KROKU 2.</b></p>
+                                <p class="text-gray text-thin text-size-1-2 no-margin"><b>WYBÓR SPOSOBU PŁATNOŚCI</b></p>
+                            </button>
+                        </div>
+                        <div class="col s5 offset-s1">
+                            <button class="cancel-order-button" ng-disabled="main.stepOneModel.disableButton == true" ng-click="cap.cancelOrder()">
+                                <p><b>ANULUJ</b><br>ZAMÓWIENIE</p>
+                            </button>
+                            <button class="button-smartpark-kiosk" ng-disabled="cap.checkLoginForm.$invalid || cap.disableButton == true" ng-click="cap.finishCardPayment()" style="padding:0 20px; margin-top: 200px;">
+                                <p class="smart-color-lighter text-size-2 no-margin"><img src="img/portfel.png" style="margin-right:25px"><b style="font-size: 72px;
+                                font-family: Titillium Web Black;
+                                line-height: 110px;">PŁACĘ</b></p>
+                            </button>
+                        </div>
+                        <div class="row" style="padding-right: 20px;">
+                            <loader loadname="cardPaymentProgress"></loader>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script id="templates/thanks.html" type="text/ng-template">
+            <div class="row" ng-swipe-right="thanks.startSwipeRight()">
+                <div class="col s6 offset-s3" style="margin-top:40px;">
+                    <img src="img/logoSmartPark_new.png" class="margin-bottom-50">
+                    </div>
+                <div class="col s12">
+                    <div ng-if="thanks.isError == false" class="margin-bottom-100">
+                        <h3 class="text-bold smart-color-normal center-align no-margin margin-bottom-20">
+                            DZIĘKUJEMY ZA ZŁOŻENIE I OPŁACENIE ZAMÓWIENIA
+                        </h3>
+                        <p class="text-thin text-gray text-size-1-4 center-align no-margin">
+                            <b>ZA KILKA CHWIL NA TWOIM KONCIE W SYSTEMIE POWINNA<br>POJAWIĆ SIĘ ZAAKTUALIZOWANA LICZBA WYJAZDÓW<b>
+                        </p>
+                    </div>
+                    <div ng-if="thanks.isError == true" class="margin-bottom-100">
+                        <h3 class="text-bold red-color center-align no-margin margin-bottom-20">
+                            ZAMÓWIENIE ZAKOŃCZONE NIEPOWODZENIEM
+                        </h3>
+                        <p class="text-thin text-gray text-size-1-4 center-align no-margin">
+                            TWOJE KONTO NIE ZOSTAŁO OBCIĄŻONE<br>PRZEPRASZAMY ZA PROBLEM
+                        </p>
+                    </div>
+                    <h2 class="margin-bottom-180 center-align smart-color-normal"><b>PRZESUŃ</b>, <b class="text-thin">ABY PRZEJŚĆ DO STRONY GŁÓWNEJ >></b></h2>
+                    <p class="smart-color-lighter text-bold text-size-2 center-align no-margin" style="line-height:1.2; margin-top:20px;">MIŁEGO DNIA!<br>ZESPÓŁ smartPARK</p>
+                    <p class="text-gray text-bold text-size-1-4 center-align">więcej o naszym systemie dowiesz się na: <b>smartpark.ath.bielsko.pl</b></p>
+                </div>
+
+
+                </div>
+            </div>
+        </script>
+    </body>
+</html>

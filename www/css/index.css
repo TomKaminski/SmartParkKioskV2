@@ -1,0 +1,369 @@
+/*LAYOUT*/
+@font-face {
+    font-family: 'Titillium Web Thin';
+    font-style: normal;
+    font-weight: 400;
+    src: local('TitilliumWeb-Thin'), url(../fonts/TitilliumWeb-ExtraLight.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Titillium Web Black';
+    font-style: normal;
+    font-weight: 400;
+    src: local('TitilliumWeb-Black'), url(../fonts/TitilliumWeb-Bold.ttf) format('truetype');
+}
+
+img{
+    max-width:100%;
+    height:auto;
+}
+
+body{
+    width:100%;
+    height:100%;
+    background-color:white;
+    font-family: 'Titillium Web', sans-serif;
+}
+.no-margin{
+    margin:0;
+}
+
+.no-padding{
+    padding:0;
+}
+
+.margin-bottom-20{
+    margin-bottom:20px;
+}
+
+.margin-bottom-50{
+    margin-bottom:50px;
+}
+
+.margin-bottom-100{
+    margin-bottom:100px;
+}
+
+.margin-bottom-180{
+    margin-bottom:180px;
+}
+
+
+.smart-color-normal{
+    color:#4a86c5;
+}
+
+.smart-color-lighter{
+    color: #28aae2;
+}
+
+h1{
+    font-size:58px;
+    color: #4a86c5;
+    font-family: 'Titillium Web';
+    text-transform: uppercase;
+    text-align:center;
+    margin-top:60px;
+}
+
+.flex-align-center-container {
+    display: flex;
+    align-items: center;
+}
+
+.column-container{
+    flex-direction: column;
+}
+
+body footer{
+    height:10%;
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background-color: #4a86c5;
+    color:white;
+    padding:10px;
+    font-family: 'Titillium Web Thin', sans-serif;
+}
+footer .row{
+    margin:0;
+    height:100%;
+}
+
+footer .row .col{
+    margin:0;
+    height:100%;
+}
+
+footer .row .col img{
+    height:50%;
+    margin-bottom:5px;
+}
+
+footer .row p{
+    font-size:16px;
+    text-align:center;
+    line-height:1.2;
+}
+
+footer .row p.author{
+    font-size:18px;
+line-height:1.5;
+    text-align:right;
+}
+/*END LAYOUT*/
+
+.pay-text{
+    font-family: "Titillium Web Black";
+    font-size:32px;
+    letter-spacing: 1px;
+    margin: 0;
+    text-align:center;
+}
+
+.text-thin{
+    font-family: "Titillium Web Thin";
+    font-weight:bold;
+}
+
+.text-bold{
+    font-family: "Titillium Web Black"
+}
+
+.text-gray{
+    color:grey;
+}
+
+.text-size-1-6{
+    font-size:1.6em;
+}
+
+.text-size-1-2{
+    font-size:1.2em;
+}
+
+.text-size-1-4{
+    font-size:1.4em;
+}
+
+.text-size-2{
+    font-size:2em;
+}
+
+.left-box {
+    position: relative;
+}
+
+.left-box:after {
+    content: '';
+    position: absolute;
+    bottom: -10%;
+    top:5%;
+    right:0;
+    border-right: 3px solid #4a86c5;
+    opacity: 0.65;
+}
+
+input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]), input[type=password]:focus:not([readonly]), input[type=email]:focus:not([readonly]), input[type=url]:focus:not([readonly]), input[type=time]:focus:not([readonly]), input[type=date]:focus:not([readonly]), input[type=datetime-local]:focus:not([readonly]), input[type=tel]:focus:not([readonly]), input[type=number]:focus:not([readonly]), input[type=search]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #4a86c5;
+    box-shadow: 0 1px 0 0 #4a86c5;
+}
+
+input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([readonly])+label, input[type=password]:focus:not([readonly])+label, input[type=email]:focus:not([readonly])+label, input[type=url]:focus:not([readonly])+label, input[type=time]:focus:not([readonly])+label, input[type=date]:focus:not([readonly])+label, input[type=datetime-local]:focus:not([readonly])+label, input[type=tel]:focus:not([readonly])+label, input[type=number]:focus:not([readonly])+label, input[type=search]:focus:not([readonly])+label, textarea.materialize-textarea:focus:not([readonly])+label {
+    color: #4a86c5;
+}
+
+[type="checkbox"]:checked+label:before {
+    border-right: 2px solid #4a86c5;
+    border-bottom: 2px solid #4a86c5;
+
+}
+
+[type="checkbox"].filled-in:checked+label:after {
+    border: 2px solid #4a86c5;
+    background-color: #4a86c5;
+}
+
+.button-smartpark-kiosk{
+    height:100%;
+    width:100%;
+    padding:10px 20px;
+    text-align:right;
+    border: 2px solid #28aae2;
+    margin-bottom:20px;
+    cursor: pointer;
+    background: white !important;
+}
+
+button.button-smartpark-kiosk[disabled], button.cancel-order-button[disabled]{
+    color: gray !important;
+    border-color: gray;
+}
+
+button.button-smartpark-kiosk[disabled] p, button.cancel-order-button[disabled] p{
+    color: gray !important;
+}
+
+.toast-green {
+    background: #66BB6A !important;
+    cursor: default !important; }
+
+.toast-red {
+    background: #ea454b !important;
+    cursor: default !important; }
+
+.ng-messages-errors p {
+    color: #c43235 !important;
+    font-size: 13px;
+    margin-top: 0; }
+
+.padding-bottom-20 {
+    padding-bottom: 20px !important; }
+
+.red-color{
+    color:#c43235;
+}
+.cancel-order-button{
+    color: #c43235;
+    width:40%;
+    float:right;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    text-align:right;
+    border: 2px solid #c43235;
+    background: white !important;
+
+}
+
+.cancel-order-button p{
+    margin:5px;
+    font-size:1.2em;
+}
+
+[type="radio"]:not(:checked) + label:before, [type="radio"]:not(:checked) + label:after, [type="radio"]:checked + label:before, [type="radio"]:checked + label:after, [type="radio"].with-gap:checked + label:before, [type="radio"].with-gap:checked + label:after {
+ border-radius: 0
+}
+
+[type="radio"] + label:before, [type="radio"] + label:after {
+    width: 35px;
+    height: 35px;
+    margin: -10px 0px 0px;
+}
+
+[type="radio"]:checked + label:after, [type="radio"].with-gap:checked + label:before, [type="radio"].with-gap:checked + label:after {
+    border: 2px solid #28aae2;
+}
+
+[type="radio"]:not(:checked) + label, [type="radio"]:checked + label {
+    padding-left: 50px;
+    height: auto;
+    line-height: 18px;
+}
+
+[type="radio"]:checked + label:after, [type="radio"].with-gap:checked + label:after {
+    background-color: #28aae2;
+    z-index: 0;
+}
+
+[type="radio"]:not(:checked) + label:before, [type="radio"]:not(:checked) + label:after {
+    border: 2px solid #28aae2;
+}
+
+
+.smart-park-radio label{
+    font-size: 30px !important;
+    font-family: Titillium Web Black;
+    color: #28aae2;
+    text-transform: uppercase;
+}
+
+.smart-park-radio label .radio-desc{
+    font-size: 15px !important;
+    font-family: Titillium Web Thin;
+    font-weight:bold !important;
+    color:#808080;
+    line-height: 0.1;
+}
+
+
+.card-payment-form-container{
+    width:100%;
+    position: relative;
+}
+
+.card-payment-form-container p.title{
+    line-height: 45px;
+    font-size:16px;
+    margin:0;
+    color:white;
+    font-family:"Titillium Web";
+    background-color: #a8c207;
+    text-align: center;
+}
+
+.card-payment-form-container .inner-box{
+    width:100%;
+    border-left:2px solid #28aae2;
+    border-right: 2px solid #28aae2;
+    padding: 10px 0;
+}
+
+.card-payment-form-container .inner-box p.pay-amount{
+    font-size:26px;
+    margin:0;
+    text-align: center;
+}
+
+.card-form-label{
+    font-size:16px;
+    color: #28aae2;
+    text-align:right;
+    line-height:1.2;
+}
+
+.card-smart-input{
+    height:45px;
+    border:2px solid #28aae2;
+}
+
+.card-smart-input input, .card-smart-input input:focus{
+    border:none !important;
+}
+
+.card-smart-input input:not([type]):focus:not([readonly]), .card-smart-input input[type=text]:focus:not([readonly]), .card-smart-input input[type=password]:focus:not([readonly]), .card-smart-input input[type=email]:focus:not([readonly]), .card-smart-input input[type=url]:focus:not([readonly]), .card-smart-input input[type=time]:focus:not([readonly]), .card-smart-input input[type=date]:focus:not([readonly]), .card-smart-input input[type=datetime-local]:focus:not([readonly]), .card-smart-input input[type=tel]:focus:not([readonly]), .card-smart-input input[type=number]:focus:not([readonly]), .card-smart-input input[type=search]:focus:not([readonly]) {
+    border:none;
+    box-shadow: none;
+}
+
+.smart-icon-box{
+    height: 45px;
+    background: #28aae2;
+    color: white;
+    margin-right: 20px;
+    padding: 0;
+}
+
+.smart-icon-box p{
+    text-align: center;
+    font-size: 30px;
+}
+
+.smart-icon-box p i{
+    font-size: 32px;
+    line-height:45px;
+}
+
+.smart-cvv-desc{
+    line-height:65px;
+    height:45px;
+}
+
+.card-checkbox-label{
+    padding-left:25px;
+    text-transform: uppercase;
+}
+
+[type="checkbox"].filled-in:checked+label.card-checkbox-label:after {
+    border: 2px solid #28aae2;
+    background-color: #28aae2;
+}

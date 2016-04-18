@@ -1,0 +1,71 @@
+table.keyboardInputMaster tbody tr td table tbody tr td {
+    vertical-align:middle;
+    padding:20px;
+    font-family:'Titillium Web', sans-serif;
+    background: linear-gradient(white, #e2e3ed);
+    cursor:default;
+    -webkit-border-radius:8px;
+    border-radius:5px;
+    margin:4px 7px;
+    font-size:30px;
+    display:inline-block;
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    line-height: 30px;
+    border: 1px solid #bbbdc7;
+    box-shadow: inset 0px -2px 7px -1px #ABABAB;
+    color: gray;
+    font-weight:bold;
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    user-select: none;
+    cursor:default;
+}
+
+table.keyboardInputMaster{
+    position: fixed !important;
+    bottom: 10% !important;
+    left: 25% !important;
+    width: 75%;
+    top:auto !important;
+    background: rgba(85,141,200,0.67);
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    user-select: none;
+}
+
+table.keyboardInputMaster thead tr th span:active,
+table.keyboardInputMaster thead tr th span.pressed,
+table.keyboardInputMaster tbody tr td table tbody tr td:active,
+table.keyboardInputMaster tbody tr td table tbody tr td.pressed {
+    background:#7290b2;
+    color:white;
+    box-shadow: inset 0px 0px 10px 7px #647f9f;
+    border-color:#647f9f;
+}
+
+table.keyboardInputMaster tbody tr td table tbody tr td.space {
+    width: 613px;
+}
+
+table.keyboardInputMaster tbody tr td table tbody tr td.numStart {
+    margin-left:60px;
+}
+
+table.keyboardInputMaster tbody tr td table tbody tr td.zeroNum {
+    width: 237px;
+}
+
+table.keyboardInputMaster tbody tr td table tbody tr td.bkspace, table.keyboardInputMaster tbody tr td table tbody tr td.clear, table.keyboardInputMaster tbody tr td table tbody tr td.close {
+    width: 200px;
+}
+
+td.keyboardsArea{
+    padding-top:40px;
+    padding-bottom:40px;
+}
+
+td.keyboardsArea > table{
+    width:auto;
+    margin:auto;
+}
+
