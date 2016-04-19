@@ -15,8 +15,11 @@
         <section ui-view="layout" style="height:100%"></section>
 
         <script src="lib/jquery/jquery.js"></script>
-        <!--<script src="https://secure.payu.com/res/v2/openpayu-2.0.js"></script>-->
-        <!--<script src="https://secure.payu.com/res/v2/plugin-token-2.0.js"></script>-->
+        <script>
+            window.OPU = jQuery;
+        </script>
+
+
         <script src="lib/materialize/materialize.js"></script>
         <script src="lib/angular/angular.js"></script>
         <script src="lib/angular/angular-messages.js"></script>
@@ -28,14 +31,9 @@
         <script src="js/app.js"></script>
         <script src="js/services/loadingContentService.js"></script>
         <script src="js/services/notificationService.js"></script>
-        <!--<script src="js/services/payuReturnService.js"></script>-->
         <script src="js/services/orderService.js"></script>
-
         <script src="js/factories/apiFactory.js"></script>
-
         <script src="js/directives/loaderDirective.js"></script>
-        <!--<script src="js/directives/requestVerificationTokenDirective.js"></script>-->
-
         <script src="js/controllers/layoutCtrl.js"></script>
         <script src="js/controllers/mainCtrl.js"></script>
         <script src="js/controllers/homepageCtrl.js"></script>
@@ -44,6 +42,8 @@
         <script src="js/controllers/choosePaymentCtrl.js"></script>
         <script src="js/controllers/traditionalPaymentCtrl.js"></script>
 
+        <script src="https://secure.payu.com/res/v2/openpayu-2.0.js"></script>
+        <script src="https://secure.payu.com/res/v2/plugin-token-2.0.js"></script>
 
         <script id="templates/layout.html" type="text/ng-template">
 
@@ -265,17 +265,17 @@
                         <b>I GOTOWE!</b>
                     </h5>
                 </div>
-                <div class="col s9" style="padding: 0px 80px;">
+                <div class="col s9" style="padding: 0px 80px;" ng-form name="card-payment-form">
                     <h2 class="smart-color-lighter text-bold margin-bottom-20">krok 3.</h2>
                     <div class="row">
-                        <div class="col s6 no-padding" ng-form name="main.checkLoginForm">
+                        <div class="col s6 no-padding" ng-form name="cap.cardPaymentForm">
                             <p class="text-gray text-thin text-size-2 no-margin"><b>Realizacja zamówienia</b></p>
                             <div class="card-payment-form-container">
                                 <p class="title">PŁATNŚĆ REALIZOWANA PRZEZ <img src="img/payu_white.png" style="vertical-align: middle; height: 30px; margin-left:15px"></p>
                                 <div class="inner-box">
                                     <p class="pay-amount"><span class="text-gray">KWOTA DO ZAPŁATY: </span>50.00 PLN</p>
                                     <br>
-                                    <div class="row">
+                                    <div class="row" style="padding-bottom:10px">
                                         <div class="col s3 card-form-label">NUMER<br>KARTY</div>
                                         <div class="col s1 smart-icon-box">
                                             <p class="no-margin">
@@ -283,10 +283,13 @@
                                             </p>
                                         </div>
                                         <div class="col s7 card-smart-input">
-                                            <input id="card-number" type="text" class="center-align" placeholder="1111 1111 1111 1111">
+                                            <input type="text" required class="center-align payu-card-number" style="margin:0" placeholder="1111 1111 1111 1111" ng-virtual-keyboard ng-model="cap.cardModel.cardNumber" name="cardNumber" id="cardNumber">
+                                            <div ng-messages="cap.cardPaymentForm.cardNumber.$error" ng-show="cap.cardPaymentForm.cardNumber.$touched" class="ng-messages-errors">
+                                                <p ng-message="required" class="no-margin">Numer karty jest wymagany!</p>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" style="margin-bottom:10px">
                                         <div class="col s3 card-form-label">DATA<br>WAŻNOŚCI KARTY</div>
                                         <div class="col s1 smart-icon-box">
                                             <p class="no-margin">
@@ -294,14 +297,23 @@
                                             </p>
                                         </div>
                                         <div class="col s2 card-smart-input">
-                                            <input id="expire-date-month" type="text" min="1" max="12" class="center-align" placeholder="MM">
+                                            <input  required type="number" min="1" max="12" class="center-align payu-card-expm" placeholder="MM" ng-virtual-keyboard ng-model="cap.cardModel.expireDateMonth" name="expireDateMonth" id="expireDateMonth">
                                         </div>
                                         <div class="col s1 center-align text-size-1-4" style="line-height:45px;">/</div>
                                         <div class="col s2 card-smart-input">
-                                            <input id="expire-date-year" type="text" min="16" max="99" class="center-align" placeholder="YY">
+                                            <input  required type="number" min="16" max="99" class="center-align payu-card-expy" placeholder="YY" ng-virtual-keyboard ng-model="cap.cardModel.expireDateYear" name="expireDateYear" id="expireDateYear">
                                         </div>
+                                        <div class="col s7 offset-s5">
+                                            <div ng-messages="cap.cardPaymentForm.expireDateMonth.$error" ng-show="cap.cardPaymentForm.expireDateMonth.$touched" class="ng-messages-errors">
+                                                <p ng-message="required" class="no-margin">Podaj miesiąc w którym kończy się ważność karty</p>
+                                            </div>
+                                            <div ng-messages="cap.cardPaymentForm.expireDateYear.$error" ng-show="cap.cardPaymentForm.expireDateYear.$touched" class="ng-messages-errors">
+                                                <p ng-message="required" class="no-margin">Podaj rok w którym kończy się ważność karty</p>
+                                            </div>
+                                        </div>
+
                                     </div>
-                                    <div class="row">
+                                    <div class="row" style="margin-bottom:10px">
                                         <div class="col s3 card-form-label" style="line-height:45px; vertical-align: bottom">CVV2/CVC2*</div>
                                         <div class="col s1 smart-icon-box">
                                             <p class="no-margin">
@@ -309,15 +321,20 @@
                                             </p>
                                         </div>
                                         <div class="col s2 card-smart-input">
-                                            <input id="cvv-code" type="text" class="center-align" placeholder="111">
+                                            <input type="text" class="center-align payu-card-cvv" placeholder="111" required min="0" max="999" ng-virtual-keyboard ng-model="cap.cardModel.cardCVV" name="cardCVV" id="cardCVV">
                                         </div>
                                         <div class="col s5"><p class="smart-color-lighter no-margin smart-cvv-desc">*numer znajdziesz na odwrocie karty</p></div>
+                                        <div class="col s7 offset-s5">
+                                            <div ng-messages="cap.cardPaymentForm.cardCVV.$error" ng-show="cap.cardPaymentForm.cardCVV.$touched" class="ng-messages-errors">
+                                                <p ng-message="required" class="no-margin">Podaj kod CVV2/CVC2</p>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col s9 offset-s3" style="padding-left: 0;">
                                             <p class="no-margin">
-                                                <input type="checkbox" id="test5" class="filled-in smart-color-lighter"/>
-                                                <label for="test5" class="card-checkbox-label smart-color-lighter">Akceptuję regulamin płatności payu</label>
+                                                <input type="checkbox" id="payu-agreement" name="payu-agreement" class="filled-in smart-color-lighter payu-agreement"/>
+                                                <label for="payu-agreement" class="card-checkbox-label smart-color-lighter">Akceptuję regulamin płatności payu</label>
                                             </p>
                                         </div>
                                     </div>
@@ -341,7 +358,7 @@
                             <button class="cancel-order-button" ng-disabled="main.stepOneModel.disableButton == true" ng-click="cap.cancelOrder()">
                                 <p><b>ANULUJ</b><br>ZAMÓWIENIE</p>
                             </button>
-                            <button class="button-smartpark-kiosk" ng-disabled="cap.checkLoginForm.$invalid || cap.disableButton == true" ng-click="cap.finishCardPayment()" style="padding:0 20px; margin-top: 200px;">
+                            <button class="button-smartpark-kiosk" ng-disabled="cap.cardPaymentForm.$invalid || cap.disableButton == true" ng-click="cap.finishCardPayment()" style="padding:0 20px; margin-top: 200px;">
                                 <p class="smart-color-lighter text-size-2 no-margin"><img src="img/portfel.png" style="margin-right:25px"><b style="font-size: 72px;
                                 font-family: Titillium Web Black;
                                 line-height: 110px;">PŁACĘ</b></p>

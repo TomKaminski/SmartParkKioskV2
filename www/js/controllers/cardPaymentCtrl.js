@@ -8,6 +8,13 @@
             $state.go('app.choosePayment')
         }
 
+        self.cardModel = {
+            cardCVV: null,
+            cardNumber: null,
+            expireDateYear: null,
+            expireDateMonth: null
+        }
+
         self.orderInfo = orderService.orderModel;
 
         self.cancelOrder = function(){
